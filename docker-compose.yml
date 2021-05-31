@@ -1,0 +1,13 @@
+version: "3"
+
+services :
+  backend:
+    container_name: nodejsApi
+    build: .
+    command: yarn start
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/usr/app/backend
+    links:
+      - dynamodb
