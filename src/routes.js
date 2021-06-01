@@ -16,7 +16,7 @@ routes.post('/auth', UserController.auth)
 routes.get('/comics', authMiddleware, ComicController.all)
 routes.post('/comics', authMiddleware, multer(multerService).single('comic'), ComicController.create)
 routes.get('/comics/:id', authMiddleware, ComicController.show)
-routes.delete('comics/:id', authMiddleware, ComicController.delete)
-routes.put('comics/:id', authMiddleware, ComicController.update)
+routes.delete('/comics/:id', authMiddleware, ComicController.delete)
+routes.put('/comics/:id', authMiddleware, ComicController.update)
 
 module.exports = routes
