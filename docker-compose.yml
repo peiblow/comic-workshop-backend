@@ -1,13 +1,37 @@
 version: "3"
 
 services :
+
   backend:
     container_name: nodejsApi
     build: .
-    command: yarn start
+    image: comic-workshop-api
+    container_name: comic-workshop-backend
+    command: yarn dev
     ports:
       - "8080:8080"
+    depends_on:
+      - mongodb
     volumes:
       - .:/usr/app/backend
-    links:
-      - dynamodb
+    networks:
+      - backend
+
+  mongodb:
+    image: mongo
+    container_name: comic-workshop-db
+    ports:
+      - "27017:27017"
+    networks:
+      - backend
+    volumes:
+      - db-data:/data/db
+
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  db-data:
+
+    

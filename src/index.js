@@ -7,7 +7,7 @@ require('dotenv').config()
 const app = express()
 const server = require('http').Server(app)
 
-mongoose.connect(process.env.MONGO_DB_URL, {
+mongoose.connect(`mongodb://${process.env.MONGO_DB_URL}`, {
   useNewUrlParser: true,
   useFindAndModify: false,
   useUnifiedTopology: true

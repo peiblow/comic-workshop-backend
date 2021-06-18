@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "test": "set NODE_ENV=test && mocha __tests__/**/*.test.js --exit",
-    "dev": "nodemon src/index.js",
+    "dev": "nodemon -L --ignore node_modules/ src/index.js",
     "start": "node src/index.js"
   },
   "dependencies": {
