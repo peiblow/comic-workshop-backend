@@ -25,6 +25,9 @@ const UserSchema = new mongoose.Schema({
   manager: {
     type: Boolean
   }
+},
+{
+  timestamps: true
 })
 
 UserSchema.pre('save', async function (next) {
