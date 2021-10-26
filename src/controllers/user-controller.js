@@ -90,7 +90,11 @@ class UserController {
       const userId = getUserByToken(req.headers.authorization)
       const user = await UserModel.findByIdAndUpdate(userId, req.body, { new: true })
       if (req.body.password) await user.save()
-      return res.json(user)
+      
+      const response = user.toObject()
+      delete response.password
+
+      return res.json(response)
     } catch (err) {
       return res.status('500').send({
         message: 'Ocorreu um erro no servidor... ',
