@@ -5,10 +5,6 @@ const ComicSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  authorId: {
-    type: String,
-    required: true
-  },
   gender: {
     type: String,
     required: true
@@ -24,7 +20,8 @@ const ComicSchema = new mongoose.Schema({
   comicUrl: {
     type: String,
     required: true
-  }
+  },
+  author : { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
 },
 {
   timestamps: true
