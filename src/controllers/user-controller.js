@@ -1,4 +1,5 @@
 const UserModel = require('../models/user-model')
+const ComicModel = require('../models/comic-model')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const authConfig = require('../config/auth')
@@ -70,10 +71,12 @@ class UserController {
       if (!user) {
         return res.status(400).json('Usuario não encontrado')
       }
-
+      
+      const comics = await ComicModel.find({ author: id })
+      
       user.password = undefined
 
-      return res.json(user)
+      return res.json({ ...user.toObject(), comics })
     } catch (err) {
       return res.status('500').send({
         message: 'Ocorreu um erro no servidor... ',
