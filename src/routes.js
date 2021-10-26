@@ -12,6 +12,8 @@ routes.get('/', (_, res) => res.status(200).send('ok'))
 
 routes.post('/register', UserController.create)
 routes.post('/auth', UserController.auth)
+routes.get('/user/:id', authMiddleware, UserController.show)
+routes.patch('/user', authMiddleware, UserController.update)
 
 routes.get('/comics', authMiddleware, ComicController.all)
 routes.post('/comics', authMiddleware, multer(multerService).single('comic'), ComicController.create)

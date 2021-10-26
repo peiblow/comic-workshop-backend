@@ -12,7 +12,7 @@ class ComicController {
 
   async all (req, res) {
     try {
-      const comics = await ComicModel.find().sort('-createdAt')
+      const comics = await ComicModel.find().sort('-createdAt').populate('author')
       res.status(200).json(comics)
     } catch (err) {
       return res.status('500').send({
@@ -24,17 +24,17 @@ class ComicController {
 
   async create (req, res) {
     try {
-      const { title, authorId, gender, description } = req.body
+      const { title, gender, description } = req.body
       const { filename } = req.file
 
-      if (!title | !authorId | !gender | !description) {
+      if (!title | !gender | !description) {
         throw Error('Esta faltando paramentro')
       }
 
       const userId = getUserByToken(req.headers.authorization)
       const ComicInfo = {
         title,
-        authorId: userId,
+        author: userId,
         gender,
         description,
         rating: 1.5,
@@ -55,7 +55,7 @@ class ComicController {
   async show (req, res) {
     try {
       const { id } = req.params
-      const comic = await ComicModel.findById(id)
+      const comic = await ComicModel.findById(id).populate('author')
       return res.json(comic)
     } catch (err) {
       return res.status('500').send({

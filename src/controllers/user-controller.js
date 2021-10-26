@@ -1,7 +1,9 @@
 const UserModel = require('../models/user-model')
+const ComicModel = require('../models/comic-model')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const authConfig = require('../config/auth')
+const getUserByToken = require('../services/getUserByToken')
 
 class UserController {
   constructor () {
@@ -52,6 +54,48 @@ class UserController {
       })
 
       return res.json({ user, token })
+    } catch (err) {
+      return res.status('500').send({
+        message: 'Ocorreu um erro no servidor... ',
+        erro: err
+      })
+    }
+  }
+
+  async show(req, res) {
+    try {
+      const { id } = req.params
+
+      const user = await UserModel.findById(id)
+
+      if (!user) {
+        return res.status(400).json('Usuario não encontrado')
+      }
+      
+      const comics = await ComicModel.find({ author: id })
+      
+      const response = { ...user.toObject(), comics }
+      response.password = undefined
+
+      return res.json(response)
+    } catch (err) {
+      return res.status('500').send({
+        message: 'Ocorreu um erro no servidor... ',
+        erro: err
+      })
+    }
+  }
+
+  async update (req, res) {
+    try {
+      const userId = getUserByToken(req.headers.authorization)
+      const user = await UserModel.findByIdAndUpdate(userId, req.body, { new: true })
+      if (req.body.password) await user.save()
+      
+      const response = user.toObject()
+      delete response.password
+
+      return res.json(response)
     } catch (err) {
       return res.status('500').send({
         message: 'Ocorreu um erro no servidor... ',
