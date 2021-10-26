@@ -74,9 +74,10 @@ class UserController {
       
       const comics = await ComicModel.find({ author: id })
       
-      user.password = undefined
+      const response = { ...user.toObject(), comics }
+      response.password = undefined
 
-      return res.json({ ...user.toObject(), comics })
+      return res.json(response)
     } catch (err) {
       return res.status('500').send({
         message: 'Ocorreu um erro no servidor... ',
